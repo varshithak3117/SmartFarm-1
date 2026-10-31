@@ -1,0 +1,77 @@
+/**
+ * SmartFarm Responsive Layout Stylesheet
+ * Ensures optimal viewing on mobile browsers, tablets, and high-DPI displays.
+ */
+
+@media (max-width: 992px) {
+  .app-sidebar {
+    transform: translateX(-100%);
+  }
+
+  .app-sidebar.open {
+    transform: translateX(0);
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  }
+
+  .app-main {
+    margin-left: 0;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .content-body {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0 1rem;
+  }
+
+  .header-right {
+    gap: 0.5rem;
+  }
+
+  .header-right select {
+    max-width: 110px;
+    font-size: 0.75rem;
+  }
+
+  .site-search {
+    flex-wrap: wrap;
+  }
+
+  .search-status {
+    flex-basis: 100%;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  .kpi-value {
+    font-size: 1.3rem;
+  }
+
+  .land-cards-grid, .zones-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-container-card {
+    height: 260px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-left .brand-text {
+    display: none;
+  }
+}
