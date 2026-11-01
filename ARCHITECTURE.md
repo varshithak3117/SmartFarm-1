@@ -33,7 +33,7 @@ SmartFarm divides every registered plantation into three independent hydrologica
 ### Safety Interlock Loop:
 ```
            +-----------------------------+
-           | ESP32 Runoff & Flow Sensors |
+           | ESP8266 Runoff & Flow Sensors |
            +-----------------------------+
                           |
             Runoff or High Moisture Detected?
