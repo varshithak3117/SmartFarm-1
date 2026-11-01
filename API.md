@@ -21,7 +21,7 @@ Retrieves all registered agricultural lands.
     "cropType": "Arecanut + Pepper",
     "latitude": 13.693,
     "longitude": 75.244,
-    "controllerId": "ESP32_MALNAD_01",
+    "controllerId": "ESP8266_MALNAD_01",
     "controllerStatus": "online",
     "irrigationMode": "auto"
   }
@@ -44,7 +44,7 @@ Registers a new land and **automatically provisions 3 independent slope zones**:
   "cropType": "Arecanut",
   "latitude": 13.421,
   "longitude": 75.253,
-  "controllerId": "ESP32_SRINGERI_04",
+  "controllerId": "ESP8266_SRINGERI_04",
   "description": "Steep north slope plantation."
 }
 ```
@@ -60,10 +60,10 @@ Deletes a land, safely purging its associated slope zones, alerts, and records.
 
 ---
 
-## 2. Telemetry Ingestion (ESP32 / Sensors)
+## 2. Telemetry Ingestion (ESP8266 / Sensors)
 
 ### `POST /api/telemetry`
-Called by ESP32 microcontrollers to push periodic sensor data.
+Called by ESP8266 microcontrollers to push periodic sensor data.
 
 **Request Body:**
 ```json
@@ -75,7 +75,7 @@ Called by ESP32 microcontrollers to push periodic sensor data.
   "flowRateLpm": 24.0,
   "runoffDetected": false,
   "sensorValid": true,
-  "controllerId": "ESP32_MALNAD_01"
+  "controllerId": "ESP8266_MALNAD_01"
 }
 ```
 
