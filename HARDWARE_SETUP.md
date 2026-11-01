@@ -22,12 +22,12 @@ For a typical 1 to 5 acre arecanut plantation situated on a hill slope:
 ## 2. Water Delivery & Pressure Compensation
 
 - **Gravity Considerations:** Solenoid valves on lower slopes experience higher static water pressure due to gravity head. Use pressure-compensating (PC) drippers or micro-jets to maintain uniform flow across elevation differentials.
-- **Valve Power:** 12V DC latching or normally-closed solenoids connected to the ESP32 relay module.
+- **Valve Power:** 12V DC latching or normally-closed solenoids connected to the ESP8266 relay module.
 
 ---
 
 ## 3. Power Supply & Surge Protection
 
 - In rural plantation areas where grid power fluctuates, power the controller using a **12V 7Ah Lead-Acid or LiFePO4 battery** connected to a 20W Solar PV panel and MPPT solar charge controller.
-- Use an LM2596 step-down regulator to provide clean 5V DC to the ESP32.
+- Use an LM2596 step-down regulator to provide clean 5V DC to the ESP8266.
 - Ground the controller chassis with an earth spike to prevent electrostatic build-up during monsoon thunderstorms.
