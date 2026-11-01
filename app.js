@@ -659,7 +659,7 @@ const App = {
           <div class="kpi-sub">Today's Consumption</div>
         </div>
         <div class="kpi-card">
-          <div class="kpi-title">ESP32 Controller</div>
+          <div class="kpi-title">ESP8266 Controller</div>
           <div class="kpi-value text-success">${land.controllerStatus.toUpperCase()}</div>
           <div class="kpi-sub">${land.controllerId}</div>
         </div>
@@ -1203,7 +1203,7 @@ const App = {
     const cropType = form.landCropType.value;
     const latitude = parseFloat(form.landLat.value) || 13.693;
     const longitude = parseFloat(form.landLon.value) || 75.244;
-    const controllerId = form.landControllerId.value.trim() || `ESP32_${Math.floor(1000 + Math.random() * 9000)}`;
+    const controllerId = form.landControllerId.value.trim() || `ESP8266_${Math.floor(1000 + Math.random() * 9000)}`;
     const description = form.landDesc.value.trim();
 
     if (!name) return;
