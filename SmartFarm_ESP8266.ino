@@ -1,5 +1,5 @@
 /**
- * SmartFarm – ESP32 Firmware for Sloping Arecanut Plantations
+ * SmartFarm – ESP8266 Firmware for Sloping Arecanut Plantations
  * 
  * Hardware Features:
  * - 3 Capacitive Soil Moisture Sensors (Zone 1 Upper, Zone 2 Middle, Zone 3 Lower)
@@ -9,8 +9,9 @@
  * - Local Watchdog & Hardware Runoff Interlock (Fail-safe: works even without Wi-Fi)
  */
 
-#include <WiFi.h>
-#include <HTTPClient.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h>
 #include <ArduinoJson.h> // Requires ArduinoJson v6 or v7
 
 // ----------------- WI-FI CONFIGURATION -----------------
@@ -21,34 +22,34 @@ const char* WIFI_PASS = "YOUR_WIFI_PASSWORD";
 const char* SERVER_URL = "http://192.168.1.100:3000/api/telemetry";
 
 // Controller & Land Identification
-const char* CONTROLLER_ID = "ESP32_MALNAD_01";
+const char* CONTROLLER_ID = "ESP8266_MALNAD_01";
 const char* LAND_ID = "land_malnad_01";
 
 // ----------------- PIN DEFINITIONS -----------------
-// Soil Moisture Analog Pins (ADC1 channels)
-#define PIN_MOISTURE_Z1 34  // Upper Slope (Zone 1)
-#define PIN_MOISTURE_Z2 35  // Middle Slope (Zone 2)
-#define PIN_MOISTURE_Z3 32  // Lower Slope (Zone 3)
+// Soil Moisture Analog Multiplexer (ESP8266 has one ADC input)
+#define PIN_MOISTURE_ADC A0
+#define PIN_MUX_S0 14      // D5
+#define PIN_MUX_S1 12      // D6
 
 // Runoff Sensor (Digital Float Switch or Conductivity probe at base of slope)
-#define PIN_RUNOFF_SENSOR 14
+#define PIN_RUNOFF_SENSOR 15
 
 // Water Flow Sensor Pulse Pin
 #define PIN_FLOW_SENSOR 13
 
 // Relay Pins for 12V DC Solenoid Valves (Active LOW or HIGH depending on relay board)
-#define PIN_VALVE_Z1 25     // Valve 1 (Upper Slope)
-#define PIN_VALVE_Z2 26     // Valve 2 (Middle Slope)
-#define PIN_VALVE_Z3 27     // Valve 3 (Lower Slope)
+#define PIN_VALVE_Z1 5      // D1
+#define PIN_VALVE_Z2 4      // D2
+#define PIN_VALVE_Z3 0      // D3
 
 // Status LED
 #define PIN_LED_STATUS 2
 
 // ----------------- CALIBRATION CONSTANTS -----------------
-// Raw ADC readings for soil calibration (0 - 4095)
-// In air (0% moisture) approx 3200, in water (100% moisture) approx 1400
-const int AIR_VALUE = 3200;
-const int WATER_VALUE = 1400;
+// Raw ADC readings for soil calibration (0 - 1023)
+// In air (0% moisture) approx 850, in water (100% moisture) approx 350
+const int AIR_VALUE = 850;
+const int WATER_VALUE = 350;
 
 // Maximum continuous watering safety limit (in milliseconds = 45 mins)
 const unsigned long MAX_SAFE_DURATION_MS = 45UL * 60UL * 1000UL;
@@ -66,14 +67,14 @@ unsigned long valve2StartTime = 0;
 unsigned long valve3StartTime = 0;
 
 // Flow sensor ISR
-void IRAM_ATTR pulseCounter() {
+void ICACHE_RAM_ATTR pulseCounter() {
   flowPulseCount++;
 }
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
-  Serial.println("\n[SmartFarm] Booting ESP32 Slope Irrigation Controller...");
+  Serial.println("\n[SmartFarm] Booting ESP8266 Slope Irrigation Controller...");
 
   // Initialize Relay outputs (Start with all valves closed)
   pinMode(PIN_VALVE_Z1, OUTPUT);
@@ -94,8 +95,8 @@ void setup() {
   pinMode(PIN_FLOW_SENSOR, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(PIN_FLOW_SENSOR), pulseCounter, RISING);
 
-  // Moisture ADC resolution
-  analogReadResolution(12);
+  pinMode(PIN_MUX_S0, OUTPUT);
+  pinMode(PIN_MUX_S1, OUTPUT);
 
   // Connect to Wi-Fi
   connectWiFi();
@@ -141,9 +142,9 @@ void loop() {
 // ----------------- SENSOR ACQUISITION & TELEMETRY -----------------
 void readSensorsAndSendTelemetry(bool runoffDetected) {
   // Read and convert 3 slope zones
-  float moistureZ1 = readMoisturePercent(PIN_MOISTURE_Z1);
-  float moistureZ2 = readMoisturePercent(PIN_MOISTURE_Z2);
-  float moistureZ3 = readMoisturePercent(PIN_MOISTURE_Z3);
+  float moistureZ1 = readMoisturePercent(0);
+  float moistureZ2 = readMoisturePercent(1);
+  float moistureZ3 = readMoisturePercent(2);
 
   Serial.printf("[Sensors] Z1(Upper): %.1f%% | Z2(Middle): %.1f%% | Z3(Lower): %.1f%% | Flow: %.1f L/m | Runoff: %s\n",
     moistureZ1, moistureZ2, moistureZ3, currentFlowRateLpm, runoffDetected ? "YES" : "NO");
@@ -154,11 +155,15 @@ void readSensorsAndSendTelemetry(bool runoffDetected) {
   sendZoneTelemetry(3, "zone_land_malnad_01_3", moistureZ3, runoffDetected);
 }
 
-float readMoisturePercent(int pin) {
+float readMoisturePercent(int muxChannel) {
+  digitalWrite(PIN_MUX_S0, muxChannel & 0x01);
+  digitalWrite(PIN_MUX_S1, (muxChannel & 0x02) ? HIGH : LOW);
+  delayMicroseconds(100);
+
   // Take 5 samples for smoothing
   long sum = 0;
   for (int i = 0; i < 5; i++) {
-    sum += analogRead(pin);
+    sum += analogRead(PIN_MOISTURE_ADC);
     delay(5);
   }
   int raw = sum / 5;
@@ -206,10 +211,11 @@ void enforceMaxDurationWatchdog() {
 void sendZoneTelemetry(int zoneNum, const char* zoneId, float moisture, bool runoff) {
   if (WiFi.status() != WL_CONNECTED) return;
 
+  WiFiClient wifiClient;
   HTTPClient http;
-  http.begin(SERVER_URL);
+  http.begin(wifiClient, SERVER_URL);
   http.addHeader("Content-Type", "application/json");
-  http.addHeader("x-esp32-device", CONTROLLER_ID);
+  http.addHeader("x-esp8266-device", CONTROLLER_ID);
 
   StaticJsonDocument<256> doc;
   doc["landId"] = LAND_ID;
