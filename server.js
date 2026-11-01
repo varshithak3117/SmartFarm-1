@@ -1,6 +1,6 @@
 /**
  * SmartFarm Backend Server
- * Express.js application serving static UI, REST API endpoints, and ESP32 telemetry ingestion.
+ * Express.js application serving static UI, REST API endpoints, and ESP8266 telemetry ingestion.
  */
 
 const express = require('express');
@@ -86,7 +86,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`=======================================================`);
     console.log(`🌱 SmartFarm Server running on http://localhost:${PORT}`);
-    console.log(`📡 ESP32 Telemetry endpoint: http://localhost:${PORT}/api/telemetry`);
+    console.log(`📡 ESP8266 Telemetry endpoint: http://localhost:${PORT}/api/telemetry`);
     console.log(`🌴 Supporting multiple lands & 3-zone slope hydrology`);
     console.log(`🌐 Multilingual: Kannada (kn), Hindi (hi), English (en)`);
     console.log(`=======================================================`);
