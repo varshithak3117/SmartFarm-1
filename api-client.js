@@ -1,6 +1,6 @@
 /**
  * SmartFarm API Client
- * Connects frontend with Node.js Express backend and ESP32 REST endpoints.
+ * Connects frontend with Node.js Express backend and ESP8266 REST endpoints.
  * Automatically falls back to offline/local storage if backend server is not running.
  */
 
