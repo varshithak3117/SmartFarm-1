@@ -372,13 +372,13 @@ const App = {
     const overallStatusEl = document.getElementById('statOverallStatus');
     if (overallStatusEl) {
       if (summary.hasRunoffAlert) {
-        overallStatusEl.innerHTML = `<span class="badge badge-danger">⚠️ ${I18N.t('runoffDetected')}</span>`;
+        overallStatusEl.innerHTML = `<span class="badge badge-danger">${I18N.t('runoffDetected')}</span>`;
       } else if (summary.zonesIrrigating > 0) {
-        overallStatusEl.innerHTML = `<span class="badge badge-primary">💧 ${I18N.t('statusIrrigating')} (${summary.zonesIrrigating})</span>`;
+        overallStatusEl.innerHTML = `<span class="badge badge-primary">${I18N.t('statusIrrigating')} (${summary.zonesIrrigating})</span>`;
       } else if (summary.zonesNeedingWater > 0) {
         overallStatusEl.innerHTML = `<span class="badge badge-warning">⏳ ${I18N.t('statusActionNeeded')} (${summary.zonesNeedingWater})</span>`;
       } else {
-        overallStatusEl.innerHTML = `<span class="badge badge-success">✅ ${I18N.t('statusOptimal')}</span>`;
+        overallStatusEl.innerHTML = `<span class="badge badge-success">${I18N.t('statusOptimal')}</span>`;
       }
     }
 
@@ -409,7 +409,7 @@ const App = {
               <div class="land-card-header">
                 <div>
                   <h3 class="land-name">${land.name}</h3>
-                  <div class="land-subtitle">📍 ${land.location} | 📐 ${land.area} ${I18N.t(land.areaUnit || 'acres')}</div>
+                  <div class="land-subtitle">${land.location} | ${land.area} ${I18N.t(land.areaUnit || 'acres')}</div>
                 </div>
                 <span class="badge ${land.controllerStatus === 'online' ? 'badge-success' : 'badge-danger'}">
                   ${land.controllerStatus === 'online' ? I18N.t('controllerOnline') : I18N.t('controllerOffline')}
@@ -438,9 +438,9 @@ const App = {
                 </div>
 
                 <div class="land-stats-row">
-                  <div>💧 ${I18N.t('waterUsed')}: <strong>${Math.round(totalWater)} L</strong></div>
-                  <div>🚨 ${I18N.t('kpiActiveAlerts')}: <strong class="${landAlerts.length > 0 ? 'text-danger' : 'text-success'}">${landAlerts.length}</strong></div>
-                  <div>🚰 Status: <strong>${isIrrigating ? '<span class="text-primary">' + I18N.t('irrRunning') + '</span>' : I18N.t('irrStopped')}</strong></div>
+                  <div>${I18N.t('waterUsed')}: <strong>${Math.round(totalWater)} L</strong></div>
+                  <div>${I18N.t('kpiActiveAlerts')}: <strong class="${landAlerts.length > 0 ? 'text-danger' : 'text-success'}">${landAlerts.length}</strong></div>
+                  <div>Status: <strong>${isIrrigating ? '<span class="text-primary">' + I18N.t('irrRunning') + '</span>' : I18N.t('irrStopped')}</strong></div>
                 </div>
               </div>
 
@@ -449,7 +449,7 @@ const App = {
                   ${I18N.t('viewDashboard')} →
                 </button>
                 <button class="btn btn-outline btn-sm" onclick="App.openEditLandModal('${land.id}')">
-                  ⚙️ ${I18N.t('editLand')}
+                  ${I18N.t('editLand')}
                 </button>
               </div>
             </div>
@@ -479,15 +479,15 @@ const App = {
     container.innerHTML = `
       <div class="weather-summary-box">
         <div class="weather-now">
-          <span class="weather-icon">${desc.icon}</span>
+          <span class="weather-icon"></span>
           <div>
             <div class="weather-temp">${weather.current.temp}°C</div>
             <div class="weather-condition">${desc.text} (${activeLand.name})</div>
           </div>
         </div>
         <div class="weather-details-grid">
-          <div>🌧️ ${I18N.t('rainProbability')}: <strong>${weather.next24hRainProbMax}%</strong></div>
-          <div>💧 ${I18N.t('expectedRain')}: <strong>${weather.next24hRainSum} mm</strong></div>
+          <div>${I18N.t('rainProbability')}: <strong>${weather.next24hRainProbMax}%</strong></div>
+          <div>${I18N.t('expectedRain')}: <strong>${weather.next24hRainSum} mm</strong></div>
           <div>💨 Wind: <strong>${weather.current.windSpeed} km/h</strong></div>
           <div>📡 Source: <span class="badge badge-subtle">${weather.status === 'online' ? 'Live API' : 'Fallback'}</span></div>
         </div>
@@ -537,11 +537,11 @@ const App = {
           <span class="badge ${r.priority === 'high' ? 'badge-danger' : r.priority === 'medium' ? 'badge-warning' : 'badge-subtle'}">
             ${I18N.t(r.priority === 'high' ? 'priorityHigh' : r.priority === 'medium' ? 'priorityMedium' : 'priorityLow')}
           </span>
-          <span class="recom-target">🏞️ ${r.landName} ${r.zoneName ? `– ${r.zoneName}` : ''}</span>
+          <span class="recom-target">${r.landName} ${r.zoneName ? `– ${r.zoneName}` : ''}</span>
         </div>
         <div class="recom-body">
           <div class="recom-reason">${r.reason}</div>
-          <div class="recom-action">👉 <strong>${I18N.t('recomAction')}:</strong> ${r.action}</div>
+          <div class="recom-action"><strong>${I18N.t('recomAction')}:</strong> ${r.action}</div>
         </div>
       </div>
     `).join('');
@@ -573,7 +573,7 @@ const App = {
           <div class="d-flex justify-between align-center mb-3">
             <div>
               <h2 class="h4 mb-1">${land.name}</h2>
-              <p class="text-muted text-sm">📍 ${land.location} | 📐 ${land.area} ${I18N.t(land.areaUnit)} | 🌴 ${land.cropType}</p>
+              <p class="text-muted text-sm">${land.location} | ${land.area} ${I18N.t(land.areaUnit)} | ${land.cropType}</p>
             </div>
             <div class="badge ${land.controllerStatus === 'online' ? 'badge-success' : 'badge-danger'}">
               ${land.controllerId} (${land.controllerStatus})
@@ -602,7 +602,7 @@ const App = {
                     <td><strong class="moisture-${z.moistureStatus}">${z.currentMoisture}%</strong></td>
                     <td><span class="badge badge-${z.moistureStatus === 'dry' ? 'warning' : z.moistureStatus === 'wet' ? 'info' : 'success'}">${I18N.t('moisture' + z.moistureStatus.charAt(0).toUpperCase() + z.moistureStatus.slice(1))}</span></td>
                     <td><span class="badge badge-${z.valveStatus === 'open' ? 'primary' : 'subtle'}">${z.valveStatus.toUpperCase()}</span></td>
-                    <td><span class="badge badge-${z.runoffStatus === 'detected' ? 'danger' : 'subtle'}">${z.runoffStatus === 'detected' ? '⚠️ DETECTED' : 'None'}</span></td>
+                    <td><span class="badge badge-${z.runoffStatus === 'detected' ? 'danger' : 'subtle'}">${z.runoffStatus === 'detected' ? 'DETECTED' : 'None'}</span></td>
                   </tr>
                 `).join('')}
               </tbody>
@@ -610,8 +610,8 @@ const App = {
           </div>
 
           <div class="d-flex gap-2 justify-end">
-            <button class="btn btn-outline btn-sm" onclick="App.openEditLandModal('${land.id}')">✏️ ${I18N.t('editLand')}</button>
-            <button class="btn btn-danger btn-sm" onclick="App.confirmDeleteLand('${land.id}')">🗑️ ${I18N.t('deleteLand')}</button>
+            <button class="btn btn-outline btn-sm" onclick="App.openEditLandModal('${land.id}')">${I18N.t('editLand')}</button>
+            <button class="btn btn-danger btn-sm" onclick="App.confirmDeleteLand('${land.id}')">${I18N.t('deleteLand')}</button>
             <button class="btn btn-primary btn-sm" onclick="App.openLand('${land.id}')">${I18N.t('viewDashboard')} →</button>
           </div>
         </div>
@@ -637,12 +637,12 @@ const App = {
           <div>
             <span class="badge badge-primary mb-1">Land ID: ${land.id}</span>
             <h1 class="h3">${land.name}</h1>
-            <p class="text-muted">📍 ${land.location} | 📐 ${land.area} ${I18N.t(land.areaUnit)} | 🌴 ${land.cropType}</p>
+            <p class="text-muted">${land.location} | ${land.area} ${I18N.t(land.areaUnit)} | ${land.cropType}</p>
           </div>
           <div class="d-flex gap-2 flex-wrap">
-            <button class="btn btn-outline" onclick="App.navigateTo('page-irrigation')">🚰 ${I18N.t('navIrrigation')}</button>
-            <button class="btn btn-outline" onclick="App.navigateTo('page-weather')">🌤️ ${I18N.t('navWeather')}</button>
-            <button class="btn btn-primary" onclick="App.navigateTo('page-zones')">📊 ${I18N.t('navZones')}</button>
+            <button class="btn btn-outline" onclick="App.navigateTo('page-irrigation')">${I18N.t('navIrrigation')}</button>
+            <button class="btn btn-outline" onclick="App.navigateTo('page-weather')">${I18N.t('navWeather')}</button>
+            <button class="btn btn-primary" onclick="App.navigateTo('page-zones')">${I18N.t('navZones')}</button>
           </div>
         </div>
       </div>
@@ -679,12 +679,12 @@ const App = {
       <div class="card p-3 bg-subtle">
         <div class="d-flex justify-between align-center flex-wrap gap-2">
           <div>
-            <strong>🧪 Demo Simulation Controls:</strong> Test how the sloping system responds to extreme hydrological events.
+            <strong>Demo Simulation Controls:</strong> Test how the sloping system responds to extreme hydrological events.
           </div>
           <div class="d-flex gap-2">
-            <button class="btn btn-sm btn-outline" onclick="SimulationEngine.simulateDrySpell('${land.id}')">☀️ Simulate Dry Spell</button>
-            <button class="btn btn-sm btn-warning" onclick="SimulationEngine.simulateRunoffEvent('${land.id}')">🌊 Simulate Runoff Event</button>
-            <button class="btn btn-sm btn-secondary" onclick="SimulationEngine.resetRunoff('${land.id}')">🔄 Reset Slope</button>
+            <button class="btn btn-sm btn-outline" onclick="SimulationEngine.simulateDrySpell('${land.id}')">Simulate Dry Spell</button>
+            <button class="btn btn-sm btn-warning" onclick="SimulationEngine.simulateRunoffEvent('${land.id}')">Simulate Runoff Event</button>
+            <button class="btn btn-sm btn-secondary" onclick="SimulationEngine.resetRunoff('${land.id}')">Reset Slope</button>
           </div>
         </div>
       </div>
@@ -749,7 +749,7 @@ const App = {
             <div class="detail-item">
               <span class="detail-label">Runoff Sensor:</span>
               <span class="detail-val ${zone.runoffStatus === 'detected' ? 'text-danger font-bold' : 'text-success'}">
-                ${zone.runoffStatus === 'detected' ? '⚠️ ' + I18N.t('runoffDetected') : '✅ ' + I18N.t('runoffNone')}
+                ${zone.runoffStatus === 'detected' ? I18N.t('runoffDetected') : I18N.t('runoffNone')}
               </span>
             </div>
             <div class="detail-item">
@@ -778,13 +778,13 @@ const App = {
 
           <div class="zone-actions-bar">
             ${isRunning ? `
-              <button class="btn btn-warning btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'pause')">⏸️ ${I18N.t('btnPause')}</button>
-              <button class="btn btn-danger btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'stop')">⏹️ ${I18N.t('btnStop')}</button>
+              <button class="btn btn-warning btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'pause')">${I18N.t('btnPause')}</button>
+              <button class="btn btn-danger btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'stop')">${I18N.t('btnStop')}</button>
             ` : isPaused ? `
-              <button class="btn btn-success btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'resume')">▶️ ${I18N.t('btnResume')}</button>
-              <button class="btn btn-danger btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'stop')">⏹️ ${I18N.t('btnStop')}</button>
+              <button class="btn btn-success btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'resume')">${I18N.t('btnResume')}</button>
+              <button class="btn btn-danger btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'stop')">${I18N.t('btnStop')}</button>
             ` : `
-              <button class="btn btn-primary btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'start')">🚿 ${I18N.t('btnStart')}</button>
+              <button class="btn btn-primary btn-sm" onclick="App.triggerZoneAction('${land.id}', '${zone.id}', 'start')">${I18N.t('btnStart')}</button>
             `}
           </div>
         </div>
@@ -845,9 +845,9 @@ const App = {
 
               <div class="d-flex gap-2">
                 ${z.valveStatus === 'open' ? `
-                  <button class="btn btn-danger w-100" onclick="App.triggerZoneAction('${land.id}', '${z.id}', 'stop')">⏹️ ${I18N.t('btnStop')}</button>
+                  <button class="btn btn-danger w-100" onclick="App.triggerZoneAction('${land.id}', '${z.id}', 'stop')">${I18N.t('btnStop')}</button>
                 ` : `
-                  <button class="btn btn-primary w-100" onclick="App.triggerZoneAction('${land.id}', '${z.id}', 'start')">🚿 ${I18N.t('btnStart')}</button>
+                  <button class="btn btn-primary w-100" onclick="App.triggerZoneAction('${land.id}', '${z.id}', 'start')">${I18N.t('btnStart')}</button>
                 `}
               </div>
             </div>
@@ -877,7 +877,7 @@ const App = {
         <div class="d-flex justify-between align-center flex-wrap gap-2">
           <div>
             <h2 class="h3">${I18N.t('weatherTitle')}</h2>
-            <p class="text-muted">📍 ${land.name} | Lat: ${weather.latitude.toFixed(3)}, Lon: ${weather.longitude.toFixed(3)}</p>
+            <p class="text-muted">${land.name} | Lat: ${weather.latitude.toFixed(3)}, Lon: ${weather.longitude.toFixed(3)}</p>
           </div>
           <span class="badge ${weather.status === 'online' ? 'badge-success' : 'badge-subtle'}">
             ${weather.source}
@@ -887,12 +887,12 @@ const App = {
 
       ${rainAdvice.delay ? `
         <div class="alert alert-warning mb-4">
-          <div class="alert-title">🌧️ ${I18N.t('forecastSummary')}: Rain Delay Advised</div>
+          <div class="alert-title">${I18N.t('forecastSummary')}: Rain Delay Advised</div>
           <p>${I18N.currentLang === 'kn' ? rainAdvice.reasonKn : I18N.currentLang === 'hi' ? rainAdvice.reasonHi : rainAdvice.reasonEn}</p>
         </div>
       ` : `
         <div class="alert alert-info mb-4">
-          <div class="alert-title">☀️ Weather Conditions Favorable</div>
+          <div class="alert-title">Weather Conditions Favorable</div>
           <p>${I18N.t('noRainAdvice')}</p>
         </div>
       `}
@@ -902,7 +902,7 @@ const App = {
           <div class="card p-4">
             <h3 class="h5 mb-3">Current Conditions</h3>
             <div class="d-flex align-center gap-4">
-              <span style="font-size: 3.5rem;">${desc.icon}</span>
+              <span style="font-size: 3.5rem;"></span>
               <div>
                 <div class="h2 mb-0">${weather.current.temp}°C</div>
                 <div class="text-muted">${desc.text}</div>
@@ -948,7 +948,7 @@ const App = {
                 return `
                   <tr>
                     <td><strong>${d.dayName}</strong> <span class="text-xs text-muted">(${d.date})</span></td>
-                    <td>${dayDesc.icon} ${dayDesc.text}</td>
+                    <td>${dayDesc.text}</td>
                     <td>${d.maxTemp}°C / ${d.minTemp}°C</td>
                     <td><strong>${d.precipProb}%</strong></td>
                     <td>${d.precipSum} mm</td>
@@ -1024,7 +1024,7 @@ const App = {
             </div>
             <div>
               ${a.resolved ? `
-                <span class="badge badge-success">✅ ${I18N.t('statusResolved')}</span>
+                <span class="badge badge-success">${I18N.t('statusResolved')}</span>
               ` : `
                 <button class="btn btn-sm btn-outline" onclick="App.resolveAlert('${a.id}')">✓ ${I18N.t('resolveBtn')}</button>
               `}
@@ -1063,7 +1063,7 @@ const App = {
         </div>
         <p class="mb-2"><strong>${r.reason}</strong></p>
         <div class="p-2 bg-subtle rounded">
-          👉 <strong>${I18N.t('recomAction')}:</strong> ${r.action}
+          <strong>${I18N.t('recomAction')}:</strong> ${r.action}
         </div>
       </div>
     `).join('');
