@@ -10,25 +10,24 @@ const WeatherService = {
 
   // Weather code interpretation (WMO codes from Open-Meteo)
   wmoDescriptions: {
-    0: { en: "Clear sky", kn: "ಸ್ವಚ್ಛ ಆಕಾಶ", hi: "साफ आसमान", icon: "☀️" },
-    1: { en: "Mainly clear", kn: "ಮುಖ್ಯವಾಗಿ ಸ್ಪಷ್ಟ ಆಕಾಶ", hi: "मुख्य रूप से साफ", icon: "🌤️" },
-    2: { en: "Partly cloudy", kn: "ಭಾಗಶಃ ಮೋಡ", hi: "आंशिक रूप से बादल", icon: "⛅" },
-    3: { en: "Overcast", kn: "ಮೋಡ ಕವಿದ ಆಕಾಶ", hi: "घने बादल", icon: "☁️" },
-    45: { en: "Foggy", kn: "ದಟ್ಟ ಮಂಜು", hi: "कोहरा", icon: "🌫️" },
-    51: { en: "Light drizzle", kn: "ಸಣ್ಣ ಹನಿಮಳೆ", hi: "हल्की बूंदाबांदी", icon: "🌦️" },
-    53: { en: "Moderate drizzle", kn: "ಸಾಧಾರಣ ತುಂತುರು ಮಳೆ", hi: "मध्यम बूंदाबांदी", icon: "🌦️" },
-    61: { en: "Slight rain", kn: "ಸಾಧಾರಣ ಮಳೆ", hi: "हल्की बारिश", icon: "🌧️" },
-    63: { en: "Moderate rain", kn: "ಮಧ್ಯಮ ಮಳೆ", hi: "मध्यम बारिश", icon: "🌧️" },
-    65: { en: "Heavy rain", kn: "ಭಾರೀ ಮಳೆ", hi: "भारी बारिश", icon: "⛈️" },
-    80: { en: "Rain showers", kn: "ಧಾರಾಕಾರ ಮಳೆ", hi: "तेज़ बौछारें", icon: "🌧️" },
-    95: { en: "Thunderstorm", kn: "ಗುಡುಗು ಸಹಿತ ಮಳೆ", hi: "तूफान और बारिश", icon: "🌩️" }
+    0: { en: "Clear sky", kn: "ಸ್ವಚ್ಛ ಆಕಾಶ", hi: "साफ आसमान" },
+    1: { en: "Mainly clear", kn: "ಮುಖ್ಯವಾಗಿ ಸ್ಪಷ್ಟ ಆಕಾಶ", hi: "मुख्य रूप से साफ" },
+    2: { en: "Partly cloudy", kn: "ಭಾಗಶಃ ಮೋಡ", hi: "आंशिक रूप से बादल" },
+    3: { en: "Overcast", kn: "ಮೋಡ ಕವಿದ ಆಕಾಶ", hi: "घने बादल" },
+    45: { en: "Foggy", kn: "ದಟ್ಟ ಮಂಜು", hi: "कोहरा" },
+    51: { en: "Light drizzle", kn: "ಸಣ್ಣ ಹನಿಮಳೆ", hi: "हल्की बूंदाबांदी" },
+    53: { en: "Moderate drizzle", kn: "ಸಾಧಾರಣ ತುಂತುರು ಮಳೆ", hi: "मध्यम बूंदाबांदी" },
+    61: { en: "Slight rain", kn: "ಸಾಧಾರಣ ಮಳೆ", hi: "हल्की बारिश" },
+    63: { en: "Moderate rain", kn: "ಮಧ್ಯಮ ಮಳೆ", hi: "मध्यम बारिश" },
+    65: { en: "Heavy rain", kn: "ಭಾರೀ ಮಳೆ", hi: "भारी बारिश" },
+    80: { en: "Rain showers", kn: "ಧಾರಾಕಾರ ಮಳೆ", hi: "तेज़ बौछारें" },
+    95: { en: "Thunderstorm", kn: "ಗುಡುಗು ಸಹಿತ ಮಳೆ", hi: "तूफान ಮತ್ತು बारिश" }
   },
 
   getWeatherDescription(code, lang = 'en') {
-    const item = this.wmoDescriptions[code] || { en: "Cloudy", kn: "ಮೋಡಯುಕ್ತ", hi: "बादल", icon: "⛅" };
+    const item = this.wmoDescriptions[code] || { en: "Cloudy", kn: "ಮೋಡಯುಕ್ತ", hi: "बादल" };
     return {
-      text: item[lang] || item.en,
-      icon: item.icon
+      text: item[lang] || item.en
     };
   },
 
